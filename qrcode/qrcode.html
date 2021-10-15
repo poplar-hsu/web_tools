@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="ss" hidden></div>
+    <canvas ref="canvas" id="canvas"></canvas>
+</body>
+
+<script src="./qr.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        setTimeout(() => {
+            createQr()
+        }, 100)
+    }
+    function createQr() { // 生成带图片二维码
+        const qrcode = new QRCode(document.getElementById('ss'), {
+	    text : "徐佳杨大帅哥1111111111111我的教案设计大奖的哈克的啥回事大家说的啊等哈就快点哈克的啥叫但是徐佳杨大帅哥1111111111111我的教案设计大奖的哈克的啥回事大家说的啊等哈就快点哈克的啥叫但是徐佳杨大帅哥1111111111111我的教案设计大奖的哈克的啥回事大家说的啊等哈就快点哈克的啥叫但是徐佳杨大帅哥1111111111111我的教案设计大奖的哈克的啥回事大家说的啊等哈就快点哈克的啥叫但是徐佳杨大帅哥1111111111111我的教案设计大奖的哈克的啥回事大家说的啊等哈就快点哈克的啥叫但是徐佳杨大帅哥1111111111111我的教案设计大奖的哈克的啥回事大家说的啊等哈就快点哈克的啥叫但是徐佳杨大帅哥1111111111111我的教案设计大奖的哈克的啥回事大家说的啊等哈就快点哈克的啥叫但是徐佳杨大帅哥1111111111111我的教案设计大奖的哈克的啥回事大家说的啊等哈就快点哈克的啥叫但是",
+	    width : 128,
+	     height : 128
+	  }) // 转化链接
+        const canvas = document.getElementById("canvas")
+        console.log(canvas)
+        const ctx = canvas.getContext('2d')
+        const size = 128 / qrcode._oQRCode.moduleCount  //128设置的二维码尺寸
+        const scale = window.devicePixelRatio / getPixelRatio(ctx)
+        canvas.height = canvas.width = 128 * scale
+        ctx.scale(scale, scale)
+        qrcode._oQRCode.modules.forEach((row, rdx) => {
+            row.forEach((cell, cdx) => {
+                ctx.fillStyle = cell ? '#000' : '#fff' // 设置二维码颜色和背景颜色
+                var w = (Math.ceil((cdx + 1) * size) - Math.floor(cdx * size))
+                ctx.fillRect(Math.round(cdx * size), Math.round(rdx * size), w, w)
+            })
+        })
+        var image = document.createElement('img')
+        image.src = './2.png' //二维码中间图标
+        image.onload = () => {
+            var dwidth = 128 * 0.2 // 设置图片大小
+            var dx = (128 - dwidth) / 2
+            var dheight = image.height / image.width * dwidth
+            console.log(size)
+            console.log(dheight)
+            var dy = Math.abs((128 - dheight) / 2)
+            image.width = dwidth
+            image.height = dheight
+            console.log(image)
+            console.log(dx, dy, dwidth, dheight)
+            ctx.drawImage(image, dx, dy, dwidth, dheight)
+            // image.setAttribute('crossOrigin', 'anonymous');
+            // console.log(canvas.toDataURL())
+            // imgcode.src = canvas.toDataURL()
+            // console.log(imgcode.src)
+        }
+    }
+    function getPixelRatio(ctx) {
+        return ctx.webkitBackingStorePixelRatio || ctx.backingStorePixelRatio || 1
+    }
+
+</script>
+
+</html>
